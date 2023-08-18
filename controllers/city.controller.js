@@ -2,26 +2,20 @@ import City from "../models/City.js";
 
 const controller = {
     getCities: (req, res) => {
-        res.json({
-            cities: [
-                {name: 'Barcelona'},
-                {name: 'Paris'}
-            ]
-        });
+        console.log("Se ejecuto controlador de getCities")
+
+        res.send("getCities")
     },
     createCity: async (req, res) => {
-        try {
-            const newCity = await City.create(req.body);
-            return res.status(201).json({
-                success: true,
-                message: "City created"
-            })
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Error creating city"
-            })
-        }
+        const newCity = await City.create({ 
+            "name": "Paris",
+            "country": "France",
+            "image": "/public/img/paris.jpg"
+        })
+        return res.status(201).json({
+            success: true,
+            message: "City created"
+        })
     },
     postCity: () => {},
     deleteCity: () => {},
