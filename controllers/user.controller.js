@@ -4,8 +4,8 @@ const controller = {
             user: 'Valentina Assef'
         });
     },
-    postUsers: () => {},
-    deleteUsers: () => {},
+    postUser: () => {},
+    deleteUser: () => {},
 }
 
 export default controller;

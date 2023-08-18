@@ -4,11 +4,13 @@ import cityRouter from "./city.router.js";
 
 const router = express.Router();
 
+//Ejemplo
 router.get('/', (req, res) => {
     res.send('Hello world')
 });
+//
 
-router.use('/users', userRouter)
-router.use('/cities', cityRouter)
+router.use('/users', userRouter);
+router.use('/cities', cityRouter);
 
 export default router;
