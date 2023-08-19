@@ -33,7 +33,7 @@ const controller = {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: "Failed to get the city"
+                message: "Failed to get city"
             })
         }
     },
@@ -44,7 +44,7 @@ const controller = {
             queries.name = new RegExp(`^${req.query.name}`, 'i')
         }
         try {
-            const cities = await City.find(queries)
+            const cities = await City.find(queries).populate("user")
             if(cities.length > 0){
                 return res.status(200).json({
                     success: true,
@@ -72,7 +72,7 @@ const controller = {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: "Failed to create"
+                message: "Failed to create city"
             })
         }
     },
