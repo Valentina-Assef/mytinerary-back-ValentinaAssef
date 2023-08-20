@@ -62,6 +62,7 @@ const controller = {
             })
         }
     },
+    //Crear City
     createCity: async (req, res) => {
         try {
             const newCity = await City.create(req.body)
@@ -76,8 +77,40 @@ const controller = {
             })
         }
     },
-    postCity: () => {},
-    deleteCity: () => {},
+    //Actualizar City
+    updateCity: async (req, res) => {
+        try {
+            await City.updateOne({_id: req.params.id}, req.body)
+            return res.status(200).json({
+                success: true,
+                message: "City update"
+            })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                success: false,
+                message: "Failed to update city"
+            })
+        }
+    },
+    //Borrar City
+    deleteCity: async (req, res) => {
+        try {
+            await City.deleteOne({_id: req.params.id})
+            return res.status(200).json({
+                success: true,
+                message: "City deleted"
+            })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                success: false,
+                message: "Failed to delete city"
+            })
+        }
+    }
 }
 
 export default controller;
