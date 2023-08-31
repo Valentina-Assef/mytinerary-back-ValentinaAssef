@@ -52,6 +52,24 @@ const controller = {
             })
         }
     },
+    //Itineraries by City
+    getItinerariesByCity: async (req, res) => {
+        try {
+            const cityId = req.params.cityId
+            
+            const itineraries = await Itinerary.find({ city: cityId })
+            
+            return res.status(200).json({
+                success: true,
+                itineraries
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to get information"
+            });
+        }
+    },
     //Update Itinerary
     updateItinerary: async (req, res) => {
         try {
