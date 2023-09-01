@@ -57,7 +57,7 @@ const controller = {
         try {
             const cityId = req.params.cityId
             
-            const itineraries = await Itinerary.find({ city: cityId })
+            const itineraries = await Itinerary.find({ city : cityId }).populate('city')
             
             return res.status(200).json({
                 success: true,
