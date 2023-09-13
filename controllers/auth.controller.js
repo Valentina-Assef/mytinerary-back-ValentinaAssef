@@ -2,6 +2,7 @@ import crypto from "crypto"
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import User from "../models/User.js"
+import { verify } from "../helpers/google-verify.js"
 
 const controller = {
     signup: async (req, res, next) => {
@@ -58,6 +59,62 @@ const controller = {
             res.status(500).json({
                 success: false,
                 message: "Error al autenticar el usuario"
+            })
+        } 
+    },
+    googleSignIn: async (req, res, next) => {
+        const { token_id } = req.body
+        console.log(req.body);
+        try {
+            // Verifica el token de Google que viene del front
+            const {name, email, photo} = await verify(token_id)
+
+            //Verifica si el usuario existe
+            let user = await User.findOne({email})
+            // Si no existe, se crea
+            if (!user) {
+                const data = {
+                    name,
+                    email,
+                    photo,
+                    password: bcryptjs.hashSync(process.env.STANDARD_PASS, 10),
+                    google: true,
+                    verify_code: crypto.randomBytes(10).toString("hex")
+                }
+                user = await User.create(data)
+            }
+            //Si el usuario ya existe
+            user.online = true
+            await user.save()
+
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email,
+                    name: user.name,
+                    photo: user.photo
+                },
+                process.env.SECRET_TOKEN,
+                { expiresIn: "10h" }
+            )
+
+            return res.status(200).json({
+                success: true,
+                message: "Usuario logueado con Google",
+                response: {
+                    token,
+                    user: {
+                        name: user.name,
+                        email: user.email,
+                        photo: user.photo
+                    },
+                }
+            })
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Error al autenticar con Google",
+                error: error.message
             })
         } 
     },
