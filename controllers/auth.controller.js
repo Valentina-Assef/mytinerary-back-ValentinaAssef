@@ -84,6 +84,7 @@ const controller = {
                 user = await User.create(data)
             }
             //Si el usuario ya existe
+            //Loguearlo
             user.online = true
             await user.save()
 
@@ -98,6 +99,7 @@ const controller = {
                 { expiresIn: "10h" }
             )
 
+            //Devuelvo lo mismo q mi signIn
             return res.status(200).json({
                 success: true,
                 message: "Usuario logueado con Google",
